@@ -3,6 +3,7 @@ export const app = express();
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import { errorMiddleware } from './middleware/error.js';
 
 
 dotenv.config();
@@ -25,8 +26,11 @@ app.get('/test',(req,res)=>{
     });
 })
 
+//other path
 app.all('/*path',(req,res,next)=>{
     const error = new Error(`Route ${req.originalUrl} not found`);
     error.statusCode = 404;
     next(error);
 });
+
+app.use(errorMiddleware);
